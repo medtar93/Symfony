@@ -1,0 +1,53 @@
+{% extends 'layout_admin.html.twig' %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+
+<table border="1" class="table">
+    <thead class="thead-dark">
+        <th>id produit</th>
+        <th>reference</th>
+        <th>catégorie</th>
+        <th>titre</th>
+        <th>description</th>
+        <th>couleur</th>
+        <th>taille</th>
+        <th>public</th>
+        <th>photo</th>
+        <th>prix</th>
+        <th>stock</th>
+        <th>modifier</th>
+        <th>supprimer</th>
+    </thead>
+    <tbody>
+        {% for pdt in produits %}
+            <tr>
+                <td>{{pdt.id_Produit}}</td>
+                <td>{{pdt.reference}}</td>
+                <td>{{pdt.categorie}}</td>
+                <td>{{pdt.titre}}</td>
+                <td>{{pdt.description}}</td>
+                <td>{{pdt.couleur}}</td>
+                <td>{{pdt.taille}}</td>
+                <td>{{pdt.public}}</td>
+                <td><img height="80" src="{{ asset('photo/'~ pdt.photo)}}" alt=""></td>
+                <td>{{pdt.prix}}</td>
+                <td>{{pdt.stock}}</td>
+                <td> <a href="{{ path('update_produit',{'id' : pdt.id_Produit}) }}"><i class="far fa-edit"></i></a></td>
+                <td>
+                   <a href="{{ path('delete_produit',{'id' : pdt.id_Produit}) }}">
+                        <button type="button" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                   </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+
+
+</table>
+
+{% endblock %}

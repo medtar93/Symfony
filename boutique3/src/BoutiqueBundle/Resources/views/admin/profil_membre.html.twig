@@ -1,0 +1,67 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %} 
+	 
+	 <!-- Portfolio Item Row -->
+        <div class="row">
+
+			<div class="col-lg-12">
+				<h1>{{title}}</h1>
+			</div>
+			
+	
+	 		<div class="col-md-8">
+                <img class="img-fluid" src="{{asset('/photo/'~produit.photo )}}" alt="{{produit.titre}}">
+            </div>
+	
+			<div class="col-md-4">
+				<h3>profil de {{membre.nom}}  {{membre.prenom}}</h3>
+			        <h3>Détails</h3>
+                    <table border="1" class="table">
+                        <thead class="thead-dark">
+                            <th>id Membre</th>
+                            <th>reference</th>
+                            <th>catégorie</th>
+                            <th>prenom</th>
+                            <th>email</th>
+                            <th>civilite</th>
+                            <th>ville</th>
+                            <th>code Postal</th>
+                            <th>adresse</th>
+                            <th>modifier</th>
+                            <th>supprimer</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                                <td>{{membre.id_Membre}}</td>
+                                <td>{{membre.username}}</td>
+                                <td>{{membre.nom}}</td>
+                                <td>{{membre.prenom}}</td>
+                                <td>{{membre.email}}</td>
+                                <td>{{membre.civilite}}</td>
+                                <td>{{membre.ville}}</td>
+                                <td>{{membre.codePostal}}</td>
+                                <td>{{membre.adresse}}</td>
+                                <td> <a href="{{ path('update_membre',{'id' : membre.id_membre}) }}"><i class="far fa-edit"></i></a></td>
+                                <td> 
+                                    <a href="{{ path('delete_membre',{'id' : membre.id_membre}) }}">
+                                        <button type="button" class="close" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                    </a>
+                                </td> 
+                            </tr>
+			
+			
+ 				
+				<br><a href="{{ path ('categorie', { 'categorie' : produit.categorie })}}"> Retour vers votre sélection</a>
+			</div><!-- .col-md-4 -->
+        </div>
+        <!-- /.row -->
+		<div class="row">
+
+		
+        
+	
+
+		{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'layout_admin.html.twig' %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+
+<table border="1" class="table">
+    <thead class="thead-dark">
+        <th>id Membre</th>
+        <th>reference</th>
+        <th>catégorie</th>
+        <th>prenom</th>
+        <th>email</th>
+        <th>civilite</th>
+        <th>ville</th>
+        <th>code Postal</th>
+        <th>adresse</th>
+        <th>modifier</th>
+        <th>supprimer</th>
+    </thead>
+    <tbody>
+        {% for membre in membres %}
+            <tr>
+                <td>{{membre.id_Membre}}</td>
+                <td>{{membre.username}}</td>
+                <td>{{membre.nom}}</td>
+                <td>{{membre.prenom}}</td>
+                <td>{{membre.email}}</td>
+                <td>{{membre.civilite}}</td>
+                <td>{{membre.ville}}</td>
+                <td>{{membre.codePostal}}</td>
+                <td>{{membre.adresse}}</td>
+                <td> <a href="{{ path('update_membre',{'id' : membre.id_membre}) }}"><i class="far fa-edit"></i></a></td>
+                <td> 
+                   <a href="{{ path('delete_membre',{'id' : membre.id_membre}) }}">
+                        <button type="button" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                   </a>
+                </td> 
+            </tr>
+        {% endfor %}
+    </tbody>
+
+
+
+</table>
+
+{% endblock %}

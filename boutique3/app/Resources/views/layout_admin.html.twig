@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+   
+	<title>Ma Boutique - {% block title %} {% endblock %}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="{{asset('/css/style.css')}}">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+</head>
+
+<body>
+	<!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <!-- La marque -->
+       <a class="navbar-brand" href="">BACK OFFICE : MA BOUTIQUE</a>
+       
+        <!-- Le burger -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav1" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        
+        <!-- Le menu -->
+        <div class="collapse navbar-collapse" id="nav1">
+			<ul class="navbar-nav ml-auto">
+				<li><a class="nav-link" href="{{ path('accueil') }}">Retour à la Boutique</a></li>
+                <li><a class="nav-link" href="{{ path('show_produit') }}">Voir les produits</a></li>
+                <li><a class="nav-link" href="{{ path('add_produit') }}">Ajouter les produits</a></li>
+                <li><a class="nav-link" href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+        	</ul>
+        </div>
+      </div>
+    </nav>
+
+   
+    <!-- Page Content -->
+    <div class="container" style="min-height: 80vh;">
+        <!-- ici nous aurons le contenu spécifique de notre page -->
+
+
+        {% block content %}
+        {% endblock %}
+		
+		
+		
+		
+	</div><!-- fin .container -->
+
+
+    <!-- footer -->
+    <div class="container">
+        <hr>
+        <footer>
+           <div class="row">
+               <div class="col-lg-12">
+                    <p>Copyright &copy; Ma Boutique - 2018</p>                   
+               </div> 
+           </div>
+        </footer>
+    </div>
+    <!-- fin footer -->
+
+</body>
+</html>	
+		
+		
+		

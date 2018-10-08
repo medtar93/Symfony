@@ -1,0 +1,190 @@
+<?php
+
+namespace BoutiqueBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
+use BoutiqueBundle\Entity\Membre;
+use BoutiqueBundle\Entity\Produit;
+use BoutiqueBundle\Entity\Commande;
+use BoutiqueBundle\Entity\DetailsCommande;
+
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+
+class AdminController extends Controller{
+
+/**
+ * @Route("/admin/", name="home_admin") 
+ */
+public  function homeAdminAction () {}
+
+/**
+ * @Route("/admin/produit/show", name="show_produit") 
+ */
+public function produitShowAction()
+   {
+       $repository = $this -> getDoctrine() -> getRepository(Produit::class); // je veux récupérer tous les produits
+       $produits = $repository -> findAll();   // équivalent du SELECT *       
+       
+       // SELECT DISTINCT Categorie FROM produit
+       $em = $this -> getDoctrine() -> getManager();
+       $query = $em -> createQuery("SELECT DISTINCT p.categorie FROM BoutiqueBundle\Entity\Produit p");
+       $categories = $query -> getResult();        $params = array(
+
+           'produits' => $produits,
+           'categories' => $categories,
+           'title' => 'Gestion des produits'
+       );     
+       return $this->render('@Boutique/admin/show_produit.html.twig', $params);
+
+   }
+
+
+/**
+ * @Route("/admin/produit/add", name="add_produit") 
+ */
+public  function produitAddAction(Request $request) {
+    $produit = new Produit;
+
+    $formBuilder = $this -> get('form.factory') -> createBuilder(FormType::class, $produit);
+    // $formBuilder = $this ->  createFormBuilder($produit);
+
+
+
+
+    $formBuilder
+        ->add('reference', TextType::class)
+        ->add('categorie',TextType::class)
+        ->add('titre',TextType::class)
+        ->add('description',TextType::class)
+        ->add('couleur',TextType::class)
+        ->add('taille',TextType::class)
+        ->add('public',TextType::class)
+        ->add('photo',TextType::class)
+        ->add('prix',MoneyType::class)
+        ->add('stock',IntegerType::class)
+        ->add('ajouter',SubmitType::class);
+       
+
+    // Je récupère le formulaire :
+    $form = $formBuilder -> getForm();
+    
+    // Je génére le formulaire (HTML,- partie visuelle )
+    $formView = $form -> createView();
+    
+    $form -> handleRequest($request);
+        
+    if($form -> isSubmitted() && $form -> isValid()){
+        // On verra plus tard la validation 
+
+        $em = $this -> getDoctrine() -> getManager();
+        $em -> persist($produit);
+        $em -> flush ();
+
+        $request -> getSession() -> getFlashBag() -> add('success', 'Félicitations, vous avez ajouter votre produit  !');
+
+        return $this -> redirectToRoute('show_produit');
+    }
+    
+
+
+
+    $params = array( 
+        'title' => 'Ajout produit',
+        'updateProduitForm' => $formView
+    );
+    return $this->render('@Boutique/admin/form_produit.html.twig', $params);
+ }
+ 
+/**
+ * @Route("/admin/produit/update/{id}", name="update_produit") 
+ */
+public  function produitUpdateAction ($id, Request $request) {
+
+    $repository = $this -> getDoctrine() -> getRepository(Produit::class);
+
+    $produit = $repository -> find($id);
+
+    $formBuilder = $this -> get('form.factory') -> createBuilder(FormType::class, $produit);
+    // $formBuilder = $this ->  createFormBuilder($produit);
+
+
+
+
+    $formBuilder
+        ->add('reference', TextType::class)
+        ->add('categorie',TextType::class)
+        ->add('titre',TextType::class)
+        ->add('description',TextType::class)
+        ->add('couleur',TextType::class)
+        ->add('taille',TextType::class)
+        ->add('public',TextType::class)
+        ->add('photo',TextType::class)
+        ->add('prix',MoneyType::class)
+        ->add('stock',IntegerType::class)
+        ->add('ajouter',SubmitType::class);
+       
+
+    // Je récupère le formulaire :
+    $form = $formBuilder -> getForm();
+    
+    // Je génére le formulaire (HTML,- partie visuelle )
+    $formView = $form -> createView();
+    
+    $form -> handleRequest($request);
+        
+    if($form -> isSubmitted() && $form -> isValid()){
+        // On verra plus tard la validation 
+
+        $em = $this -> getDoctrine() -> getManager();
+        $em -> persist($produit);
+        $em -> flush ();
+
+        $request -> getSession() -> getFlashBag() -> add('success', 'Félicitations, vous avez modifié votre produit  !');
+
+        return $this -> redirectToRoute('show_produit');
+    }
+    
+
+
+
+    $params = array( 
+        'title' => 'Ajout produit',
+        'updateProduitForm' => $formView
+    );
+    return $this->render('@Boutique/admin/form_produit.html.twig', $params);
+
+}
+
+
+/**
+ * @Route("/admin/produit/delete/{id}", name="delete_produit") 
+ */
+
+public  function produitDeleteAction ($id, Resquest $request) {
+    $em = $this -> getDoctrine() -> getManager();
+    $produit = $em -> find(Produit::class, $id) ;
+
+     
+    $em -> remove($produit);
+    $em -> flush();
+
+    $session = $request -> getSession();
+    $session -> getFlashBag() -> add('success','le produit n°' . $id .' a bien été supprimé);
+
+    return $this -> redirectToRoute('show_produit');
+}
+
+
+
+}
+

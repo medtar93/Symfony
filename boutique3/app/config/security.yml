@@ -1,0 +1,58 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    encoders:
+        BoutiqueBundle\Entity\Membre: sha512
+        Symfony\Component\Security\Core\User\User: sha512
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        in_memory:
+            memory:
+                users:
+                    tarek:
+                        password: 123456
+                        roles: 'ROLE_USER'
+                    admin:
+                        password: admin
+                        roles: 'ROLE_ADMIN'
+    
+        main:
+            id: fos_user.user_provider.username
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+            anonymous: true
+            provider: main
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            form_login: 
+                check_path: fos_user_security_check
+                login_path: fos_user_security_login
+                default_target_path: accueil
+
+            logout:
+                path: fos_user_security_logout
+                target: accueil
+            
+            remember_me:
+                secret: %secret%
+    access_control:
+        - {path: ^/admin, roles: ROLE_ADMIN }
+        #- {path: ^/connexion, roles: ROLE_AUTHENTIFICATED_ANONYMOUS }
+        #- {path: ^/inscription, roles: ROLE_AUTHENTIFICATED_ANONYMOUS }
+
+
+    role_hierarchy:
+        ROLE_AMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_USER]

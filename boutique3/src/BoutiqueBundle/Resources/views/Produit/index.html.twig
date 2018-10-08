@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+
+<h1 class="mt-4">{{ title }}</h1>
+
+<div class="row">
+	<div class="col-md-3">
+		<div class="list-group">
+			<a href="" class="list-group-item">Tous</a>
+			
+			
+			{% for cat in categories %}
+			<a href="{{ path ('categorie', { 'categorie' : cat.categorie }) }}" class="list-group-item">{{cat.categorie}}</a>
+
+			{% endfor %}
+			
+			
+			
+		</div>
+	</div>
+	
+	<div class="col-md-9">
+		<div class="row">
+			{% for pdt in produits %}
+			<div class="col-sm-4 mb-4">	
+				<div class="card">
+					<a href="{{ path ('produit', { 'id' : pdt.id_produit }) }}"><img class="card-img-top" src="{{ asset('/photo/'~pdt.photo)}}" alt=""></a>
+					<div class="card-body">
+						<h4>{{pdt.titre}}</h4>
+						<h5>{{pdt.prix}}€</h5>
+						<p>{{pdt.description}}</p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		
+		</div>
+	</div>
+</div>
+
+{% endblock %}

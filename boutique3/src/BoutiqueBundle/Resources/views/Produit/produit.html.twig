@@ -1,0 +1,65 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %} 
+	 
+	 <!-- Portfolio Item Row -->
+        <div class="row">
+
+			<div class="col-lg-12">
+				<h1>{{title}}</h1>
+			</div>
+			
+	
+	 		<div class="col-md-8">
+                <img class="img-fluid" src="{{asset('/photo/'~produit.photo )}}" alt="{{produit.titre}}">
+            </div>
+	
+			<div class="col-md-4">
+				<h3>Description</h3>
+				<p>{{produit.description}}</p>
+				
+				<h3>Détails</h3>
+				<ul>
+					<li>Catégorie :{{produit.categorie}} </li>
+					<li>Couleur : {{produit.couleur}} </li>
+					<li>Taille : {{produit.taille}} </li>
+				</ul>
+				<h4>Prix : {{produit.prix | number_format(2, ',', ' ')}} €</h4>
+			
+			
+ 				
+				<br><a href="{{ path ('categorie', { 'categorie' : produit.categorie })}}"> Retour vers votre sélection</a>
+			</div><!-- .col-md-4 -->
+        </div>
+        <!-- /.row -->
+		<div class="row">
+
+			{# Quelques suggestions de produits. #}
+	<div class="col-lg-12">
+				<h3>Suggestions de produits</h3>
+			</div>
+				{% if suggestions %}
+				{% for sug in suggestions %}
+					<div class="col-sm-3">
+						<a href="{{ path('produit', {'id': sug.id_produit}) }}">
+							<img class="img-fluid" src="{{ asset('/photo/' ~ sug.photo) }}" alt="{{ sug.titre }}">
+						</a>
+						<h4>{{ sug.titre }}</h4>
+										<p>{{ sug.description }}</p>
+					</div>
+				{% endfor %}
+				{% else %}
+					<p>Les pages n'ont pas étés trouvées</p>
+			{% endif %}
+			</div>
+        
+		<!-- 4 suite : ajout du JS pour afficher le popup panier : -->
+		<script>
+							$(function(){
+				// Show the Modal on load
+$("#myModal").modal("show");
+			});
+		</script>
+
+
+		{% endblock %}

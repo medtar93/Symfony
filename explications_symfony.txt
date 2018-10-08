@@ -1,0 +1,909 @@
+
+---------
+SYMFONY : 
+---------
+
+INTRO : Qu'est-ce que Symfony ? 
+ETAPE 1 : Installation de du framework Symfony 3.4
+ETAPE 2 : Les Bundles
+ETAPE 3 : Les routes et les controllers
+ETAPE 4 : Créer notre Bundle Boutique
+ETAPE 5 : Twig 
+ETAPE 6 : Les entités
+ETAPE 7 : DOCTRINE
+ETAPE 8 : Les formulaires
+ETAPE 9 : Validation des données
+ETAPE 10 : Sécurité et Utilisateur
+ETAPE 11 : Les services
+ETAPE 12 : Les évènements
+ETAPE 13 : Les Assets 
+ETAPE 14 : Symfony 4
+
+-----------------------------
+
+INTRO : Qu'est-ce que Symfony ? 
+
+1/ Avantages à utiliser un Framework du marché ? 
+	A/ Une organisation Optimisée
+	B/ Fonctionnalités communes
+	C/ Services diponibles (routing, sécurité, cache, Connexion sécurisée à la BDD...)
+	
+2/ Choix du framework ! 
+	A/ Construire son propre Framework
+	B/ - Les framework FullStack (symfony, laravel, zend...)
+	   - Les minis framework (Silex, Slim, fat-Free, Lumen)
+	 	
+3/ Symfony : 
+	A/ Frameword développé par Sensiolab
+	B/ Différentes versions : 
+		- SF3.4 : SF2.8 avec retrait de certaines fonctionnalités dépréciées
+		- SF4 : SF3.4 avec retrait de certaines fonctionnalités dépréciées, et une nouvelle manière de dev', + de liberté dans l'architecture : 
+			--> PHP7.1
+			--> Flex
+			--> Bundle-less
+			
+--------------------------------------------------			
+ETAPE 1 : Installation de du framework Symfony 3.4
+--------------------------------------------------
+Sommaire : 
+1/ installer Composer
+2/ Symfony installer
+3/ Installer une application vierge symfony
+4/ Arborescence et nature des Dossiers/fichiers
+5/ Lancement de notre application
+6/ Fonctionnement des URL
+
+//----------------
+1/ installer Composer
+Composer est un outils de gestion de dépendance. Il permet d'installer les services (composants/dépendances) et de les mettre à jours. 
+Il est relié à un fichier composer.json. 
+
+2/ Installer Symfony Installer
+
+<cmd>
+php -r "file_put_contents('symfony', file_get_contents('https://symfony.com/installer'));"
+
+
+3/ Installer Une application : 
+
+	A. se diriger vers le dossier
+	<cmd>
+	cd c://Xampp/htdocs/Symfony
+	
+	B. dans le dossier cicble (clic droit + Maj > Ouvrir invite de commande)
+
+	
+	|Avec Symfony Installer : 
+	|	<cmd>
+	|	symfony new project nom_du_projet
+		
+	Avec Composer : 	
+		<cmd>
+		composer create-project symfony/framework-standard-edition projet_test
+
+4/ Arborescence et nature des Dossiers/fichiers
+
+	- Le répertoire app/ :
+	La configuration de notre application
+	
+	- Le repertoire bin/ :
+	Les exécutables de l'app 
+	
+	- Le repertoire src/ :
+	Contient tout le code de notre application. C'est ici que l'on viendra codé notre application. 
+	
+	- Le repertoire tests/ :
+	Concerne tous les test de notre application. 
+	
+	- Le repertoire var/ :
+	Concerne tout ce que va écfrire symfony durant le processus (cache, les logs)
+	
+	- Le repertoire vendor/ : 
+	Contient tout le code source (le coeur) d'un projet symfony. 
+	
+	- Le repertoire web/ :
+	Contient tous les fichiers destinés aux utilisateurs (img, js, css...). Le controller frontal (index.php >> app.php/app_dev.php)
+	
+	- Le fichier composer.json
+	Contient les dépendances. Ce fichier permet de mettre à jour l'application et les dépendances. Pour le moment constatons simplement qu'il est bien rempli...
+	
+	
+5/ Lancement de notre application
+
+A ce stade il y a deux manières de lancer l'application : 
+		
+		1/ localhost/Symfony/projet_test/web/app.php
+		
+		2/ <cmd>
+		php bin/console server:run
+		localhost:8000
+		(permet d'éviter le virtual host)
+	
+	
+Les fichiers qui sont lancés sont les suivants: 
+	web/app.php
+	web/app_dev.php (en mode développeur)
+	
+	
+	test : 
+	localhost/Symfony/projet_test/web/app.php/page_inconnu
+	localhost/Symfony/projet_test/web/app_dev.php/page_inconnu
+
+	En prod (app.php) on ne voit pas les erreurs, et pour cause, puisque que cette version est destinée aux internautes. Mais on peut voir les erreurs dans var/logs/prod.log
+	
+	
+6/ Fonctionnement des URL
+
+ Nos controllers frontaux (app.php et app_dev.php) recoivent la requête (URL) et demande au Kernel, de charger un controller et une fonction. Pour chaque fonction on définira une route pour que le Kernel s'y retrouve. 
+ 
+ voir le fichier src/AppBundle/Controller/DefaultController.php
+ 
+-----------------------
+ETAPE 2 : Les Bundles	
+-----------------------
+Sommaire : 
+
+1/ Le concept des bundles
+2/ Création d'un bundle
+-----------
+
+1/ Le concept des bundles : 
+	
+	Briques de notre application
+	
+	ProduitBundle :  
+		-> Crtl / route : boutique, categorie, produit etc...
+	MembreBundle : 
+		-> Ctrl / route : Inscription, connexion, profil etc...
+	BaseBundle : 
+		-> Ctrl / Route : Home, mentions_legales, contact, qui sommes nous
+	
+	
+	/!\ mais avec le temps, on estime plus propre de faire : 
+	AppBundle : Tous les controllers / toutes les routes.
+	
+	
+	Un bundle se compose de : $
+		- controller/ : 
+		Contient les controller
+		
+		-DependencyInjection/ :
+		Contient les informations sur votre bundle (config)
+		
+		- Entity/ : 
+		Contient les classes (classe modèle, (POPO))
+		
+		- Form/ :
+		Contient les formulaires (classes qui permettent de contruire nos formulaires)
+		
+		- Ressources/
+			- config/
+			Config du bundle (route par exemple en YAML (.yml)...)
+		
+			- public/
+			contient les fichiers publiques de votre bundle (css, js, images...)
+
+			- view/
+			Vues, template de votre bundle. 
+			
+2/ Création d'un bundle : 
+
+	<cmd>
+	php bin/console generate:bundle
+	
+	- On choisi un nom pour le bundle POLES\TestBundle 
+	- On nomme le bundle : POLESTestBundle
+	- On choisi la destination des dossiers (défault : src/)
+	- On choisi le format des config (annotation)
+	
+	/!\ ON enregistre notre namespace dans composer.json > PSR-4
+	/!\ On met à jour l'application avec <cmd> composer update
+	
+	On lance la home de notre site et nous devrions avoir "hellor World"
+	
+	/!\ Attention :  Dans cette version, le chemin des vues (dans la fonction render) ne s'écrivent pas de la même manière. 
+		- 'POLES:TestBundle:Default:index.html.twig'
+		- '@POLESTest/Default/index.html.twig'
+	
+---------------------------------------
+ETAPE 3 : Les routes et les controllers	
+---------------------------------------
+Sommaire : 
+
+1/ on créer des routes
+2/ L'objet Request
+3/ L'objet Response
+4/ Redirection
+--------------
+
+1/ les routes
+
+-> route '/' (simple rendu de vue)
+-> route '/bonjour' (sans parametre et sans vue)
+-> route '/bonjour2' (sans parametre avec une response)
+-> route '/hello/{prenom}' (avec paramètre, avec response)
+-> route '/hola/{prenom}' (avec paramètre et vue en twig
+
+2/ L'objet request
+ 
+- Dans une requete HTTP, il y a toujours une requête et une reponse
+- L'objet request va stocker toutes les infos de la requete HTTP
+
+USE Symfony\Component\HttpFoundation\Request;
+
+$request -> query -> get('param_en_get');
+$request -> request -> get('param_en_post');
+$request -> cookies -> get('param_en_cookie');
+$request -> server -> get('param_du_serveur');
+$request -> attributes -> get('param_d-url');
+
+ -> route'/hi/{prenom}'  (avec paramètre URL, paramètre GET et vue en Twig
+ 
+
+Si $request trouve un paramètre qui n'existe pas, il retourne une réponse vide. 
+
+Pour vérifier si on récupère du post : 
+if($request -> isMethod('POST'))
+
+Pour récupérer/affecter des infos dans une session : 
+
+Méthode 1 :
+$session = $request -> getSession();
+$session -> get('id_membre');
+$session -> set('id_membre', 12);
+
+Méthode 2 :
+$request -> session -> get('id_membre');
+$request -> session -> set('id_membre', 12);
+
+
+3/ L'objet response
+
+<code>
+USE Symfony\Component\HttpFoundation\Response;
+
+-> route '/bonjour2' (Test d'une response)
+
+Toute action va retourner une response. Déjà faire un render(), c'est utiliser l'objet Response
+
+$this -> render() 
+$this -> getTemplating() -> renderResponse()
+
+
+4/ Redirection
+
+<code>
+USE Symfony\Component\HttpFoundation\RedirectResponse;
+
+-> route '/redirect' (redirige vers une autre route)
+- A ce stade nous devons utiliser un nom pour nos routes
+exemple : @Route("/bonjour2", name="bonjour2")
+
+
+
+5/ message
+
+La variable app (index4.html.twig) est une variable globale, qui contient des infos générales sur l'app. 
+	(ex : app.session; app.user)
+
+
+
+			
+------------------------------------
+Etape 4 : Création de notre boutique
+-------------------------------------
+1/ Créer un nouveau projet Symfony (Boutique3)
+2/ Créer et enregistrer le Bundle BoutiqueBundle
+3/ update de l'app
+4/ Réorganisation du Bundle
+5/ Création des premières routes. 
+-----------
+
+1/ Créer un nouveau projet Symfony (Boutique3) (cf ETAPE 1)
+
+2/ Créer et enregistrer le Bundle BoutiqueBundle
+	-> <cmd>
+	   php bin/console generate:bundle
+			-> N 
+			-> BoutiqueBundle
+			-> src/
+			-> annotation
+
+	composer.json
+	<code>
+	"psr-4": {
+            "AppBundle\\": "src/AppBundle",
+			"BoutiqueBundle\\": "src/BoutiqueBundle"
+        },
+
+3/ update de l'app
+	-> <cmd>
+	   composer update
+	   
+4/ Réorganisation du Bundle
+	-> renommer DefaultController en ProduitController (fichier, classe...)
+	-> Dans les vues, on a ajouter les dossier Produit, Membre, Commande
+	
+5/ Création des premières routes. 	   
+	@Route("/")  : Accueil de notre site -> index.html.twig
+	@Route("/categorie/{categorie}")  : Page de catégorie -> index.html.twig
+	@Route("/produit/{id}")  : Page de produit -> produit.html.twig
+	   
+	   
+A ce stade nous avons des erreurs car les vues n'existe pas. Nous allons les créer au chapitre suivant.
+
+L'échange avec la BDD, se faisant avec Doctrine (outil vaste), on simule de la data avec des array $produits et $categories. 
+
+--------------
+ETAPE 5 : TWIG
+--------------
+Sommaire :
+
+1/ créer un layout
+2/ L'héritage Twig
+3/ Modification de nos vues
+4/ Documentation de TWIG
+-------------
+
+1/ créer un layout
+	-> Un layout est la structure de page prête à recevoir des vues (bloc d'html), en déclarant des zones (fenêtre exemple {% block content %}). 
+	-> Récupérer le layout.html de mini-feramework et on le nom layout.html.twig, et on le place dans Boutique3/app/Ressources/view
+	-> On retirer la variable $content pour la remplacer par un block content
+	
+2/ L'héritage Twig
+	-> Au même titre que l'héritage en PHP, l'héritage TWIG permet de dire à un fichier qu'il dépend d'un parent. 
+	-> Pour TWIG, en réalité l'héritage est matérialisé par le fait que l'on créé des blocks dans le parents (fênetres ouvertes), dans lesquels les vues peuvent afficher du contenu HTML. 
+	
+	/!\ Attention : Si une vue hérite d'un template, on ne peut insérer de code que dans les blocks prévus à cette effet. 
+	
+3/ Modification de nos vues
+	-> Dans un premier temps on récupère boutique.html de notre mini-framework et on fait : 
+		1) On le renomme en index.html.twig (parce que indexAction rend ce fichier)
+		
+		2) On lui dit d'hériter de notre layout
+		<code>
+		{% extends 'layout.html.twig' %}
+		
+		3) On insère le contenu dans le block content
+		
+		4) On modifie les boucles
+		<code>
+		<?php foreach($a as $x) :?>
+		devient :
+		{% for x in a %}
+		
+		5) On modifie les variables : 
+		<code>
+		<?= $x['y'] ?>
+		ou <?= $x -> getY() ?>
+		deviennent :
+		{{ x.y }}
+
+4/ Documentation de TWIG	
+https://twig.symfony.com/doc/2.x/	
+	
+	
+Exercice : 
+
+Créer la route Categorie, qui affiche les produits d'une categorie
+	-> Récupérez les arrays créés dans accueil
+	-> Vous passez toutes les infos en parametres de render
+	-> Vous passez la vue à affiche dans render
+	-> test url /categorie/pull (affiche tous les produits)
+	
+	
+Créer la route produit qui affiche la page d'un produit
+	-> Créer un array produit dans la fonction produitAction()
+	-> Vous passez toutes les infos en parametres de render
+	-> Vous passez la vue produit.html.twig à render
+	-> Vous créez le fichier produit.html.twig sur la base de produit.html (mini-framework)
+	-> modifier produit.html.twig (héritage, boucle, et variables). 
+	-> test url /produit/12 (affiche la page d'un produit)
+
+
+---------------------
+ETAPE 13 : Les Assets
+---------------------
+Sommaire : 
+
+1/ Modifier le composer.json
+2/ Mise à jour des composants
+3/ modifications des vues (assets et path) + Dossier photo
+-------------
+
+Le composant Asset de symfony, nous permet de gérer les ressources (images, photos, js, css, liens etc..), et de les appeler de manière absolue
+
+1/ Modifier le composer.json
+	<code>
+	"require":{
+		"symfony/asset":"^3.4"
+	},
+
+2/ Mise à jour des composants
+	<cmd>
+	composer update
+	--> Le composer met à jour l'app en fonction du fichier composer.json
+	
+	Methode 2 :
+	<cmd>
+	composer require symfony/asset
+
+3/ modifications des vues (assets et path) + Dossier photo
+		- Layout.html :
+			-> href="../../../web/css/styles.css"
+			-> href="{{ asset('css/styles.css') }}"
+			
+			-> href="index.php"
+			-> href="{{ path('accueil') }}"
+
+		- Dans les vues :
+		-> src="../../web/photo/<?= $pdt['photo'] ?>"
+		-> src="{{ asset('/photo/' ~ pdt.photo ) }}"
+		
+		-> href="fiche_produit.php?id=<?= $pdt['id_produit'] ?>"
+		-> href="{{ path('produit', { 'id'  : pdt.id_produit} ) }}"
+		ou : produit --------> nom de la route à exécuter
+			 id -------------> nom du param attendu par la route
+			 pdt.id_produit -> valeur de l'id du produit en cours
+
+			 
+---------------------------
+ETAPE 6 : Les entités 
+---------------------------
+Sommaire : 
+1/ Doctrine ORM et le concept des entités 
+2/ Créer ses entités
+3/ Les annotations
+4/ Générer ses entités
+5/ Créer les entités avec la console 
+
+-------
+1/ Doctrine ORM et le concept des entités 
+
+D'une certaine manière nos entités correspondent à la partie Model du MVC.
+On ne va plus faire de SQL, et (normalement) ne plus mettre le nez dans PHPMYADMIN.
+On va créer nos entités (nos POPO, nos classes, nos plans de fabrication) des objets qui vont être manipulés dans l'application.
+Doctrine ORM, grâce à des annotations, (ORM : Object  Relation Mapping), va comprendre  toutes les intéractions qu'il existe entre les objets. Et donc va prendre la main.
+Par exemple, nous ne ferons plus de requêtes INSERT, pour enregistrer une entrée, mais nous utiliserons des fonctions de Doctrine pour enregistrer des infos en BDD (on dit persister).
+
+2/ Créer ses entités
+    - On crée un dossier Entity dans notre Bundle
+    -> On crée un fichier par entité (Produit.php, Commande.php, Membre.php)
+    -> on crée les propriétés, les getters et setters.
+
+    Dans un premier temps nous allons juste faire "à la main" l'entité Produit. (en fait on récupère Produit.php  du mini-framework et on change le namespace).
+
+3/ Les annotations
+
+Encore une fois les annotations vont être interprêtés, nous rendent un grand service. Elles permettent à notre ORM à comprendre les interactions entre les objets et la BDD, et les Objets entre eux. C'est cela qu'on appelle le "mapping". 
+
+    <code>
+    USE Doctrine\ORM\Mapping as ORM 
+
+    On précise que notre classe va être mappée
+
+    <code>
+    /**
+    * @ORM\Entity
+    */
+
+    Pour chaque propriété, on définit les infos : 
+    <code> (primary key)
+     * @ORM\Column(name="id_produit", type="integer")
+     * @ORM\Id
+     * @ORM\GenerateValue(strategy="AUTO")
+
+     <code> (exemple)
+    * @ORM\Column(name="reference", type="integer", length="20", nullable=false)
+    * @ORM\Column(name="DefaultController", type="date")
+    * etc...
+
+    Liens : 
+    Basic Mapping : https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html
+    Assocociation Mapping : https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/association-mapping.html  
+
+
+4/ Générer ses entités 
+
+    A/ Régler les paramètres de connexion à la BDD  
+        app/Config/parameters.yml
+
+    B/ Générer la BDD en ligne de commande 
+        <cmd> 
+        php bin/console doctrine:database:create
+
+    C/ Créer nos entités dans src/BoutiqueBundle/Entity 
+        <cmd> 
+        php bin/console doctrine:schema:update --dump-sql (la requête à exécuter)
+        php bin/console doctrine:schema:update --force (exécuter la requête)
+
+5/ Créer les entités via la console
+
+    Méthode 1 : Je crée une entité en ligne de commande
+    <cmd>
+    php bin/console doctrine:generate:entity
+
+	-> On suit les différentes étapes. 
+	-> cela nous génère notre Entity et notre Repository correspondant. 
+	-> On met à jour la BDD 
+	<cmd> 
+	php bin/console doctrine:schema:update --dump-sql (la requête à exécuter)
+	php bin/console doctrine:schema:update --force (exécuter la requête)
+
+		
+    Méthode 2 : Je génère mes entités grâce à la BDD
+		--> Supprimer le dossier src/BoutiqueBundle/Entity
+		--> Modifier tous les enum de la BDD 	
+			membre varchar(1)
+			produit varchar (5)
+			commande INT (1)
+		/!\ Cela ne fonctionne pas si nous avons des champs enum dans la BDD. 
+		
+		<cmd> 			 
+		php bin/console doctrine:mapping:import BoutiqueBundle\Entity annotation --path=src/BoutiqueBundle/Entity
+		
+		Pour compléter nos entités (getters et setter et repository) : 
+			1/ Dans chaque entité compléter la ligne
+			<code> (ligne 11 de chaque entity)
+			*@ORM\Entity(repositoryClass="BoutiqueBundle\Repository\MembreRepository")
+			*@ORM\Entity(repositoryClass="BoutiqueBundle\Repository\CommandeRepository")
+			*@ORM\Entity(repositoryClass="BoutiqueBundle\Repository\ProduitRepository")
+			*@ORM\Entity(repositoryClass="BoutiqueBundle\Repository\DetailsCommandeRepository")
+			
+			2/ Lancer la commande
+			<cmd>
+			php bin/console doctrine:generate:entities BoutiqueBundle
+		
+		
+------------------------
+ETAPE 7 : DOCTRINE - DQL
+------------------------
+1/ Le service Doctrine
+2/ Accéder au service Doctrine depuis les controller
+3/ Requete "Select * FROM"
+4/ Requete "Select * FROM... WHERE id="
+5/ Requete "Select * FROM... WHERE ....=...."
+6/ Requete INSERT/UPDATE
+7/ Requete DELETE
+8/ Create Query et Query Builder
+---------------
+
+1/ Le service Doctrine
+    -> Doctrine est un outil puissant qui est utilisé dans Symfony, mais également dans le framework ZEND, CAKE, LARAVEL
+	-> Doctrine se compose de 2 éléments :
+		 - ORM : Object Relation Mapping : Lier la BDD à des Objets PHP
+		 - DBAL (DQL) : DataBase Abstract Layer : L'idée de simplifier les requêtes SQL en utilisant des fonctions PHP, au lieu d'écrire du SQL (Doctrine Query Language)
+		
+	
+2/ Accéder au service Doctrine depuis les controllers
+
+	<code>
+	$repository = $this -> getDoctrine() -> getRepository(***l'entité dont je veux récupérer le repository***);
+
+
+3/ Requete "Select * FROM"
+
+	$repository = $this -> getDoctrine() -> getRepository(Produit::class);
+	$produits = $repository -> findAll();
+
+
+4/ Requete "Select * FROM... WHERE id="
+
+	$repository = $this -> getDoctrine() -> getRepository(Produit::class);
+	$produit = $repository -> find($id);
+
+	ou alors 
+	
+	$em = $this -> getDoctrine() -> getManager();
+	$produit = $em -> find(Produit::class, $id);
+
+
+
+5/ Requete "Select * FROM... WHERE ....=...."
+
+	$repository = $this -> getDoctrine() -> getRepository(Produit::class);
+	
+	$produits = $repository -> findBy(['categorie' => $categorie]);
+	
+	$produits = $repository -> findBy([   'categorie' => 'pull', 'prix' => 15        ]);
+	
+	$produits = $repository -> findBy(  ['categorie' => 'pull'], ['prix' => 'DESC']  );
+	
+	$produit = $repository -> findOneBy(['nom' => 'Hamida']);
+	
+	
+
+
+6/ Requete INSERT/UPDATE
+
+ -> INSERT : 
+	Pour insérer une nouvelle entrée, on instancie un objet de la l'entité
+	<code>
+	$membre = new Membre; 
+	
+	On définie les propriétés 
+	<code>
+	$membre -> setPrenom('lePrenom');
+	...
+	
+	ON récupère le manager
+	<code>
+	$em = $this -> getDoctrine() -> getManager();
+	
+	On persiste, afin de préparer l'insertion, puis on flush pour rendre l'enregistrement effectif
+	<code>
+	$em -> persist($membre);
+	$em -> flush();
+	
+	
+ ->	UPDATE : 
+	Pour modifier une entrée on la récupère, on modifie les propriétés à modifier, on la persist et on flush. 
+	
+	<code>
+	$em = $this -> getDoctrine() -> getManager();
+	$membre = $em -> find(Membre::class, $id);
+	
+	$membre -> setPrenom('nouveau_prenom');
+	
+	$em -> persist($membre);
+	$em -> flush();
+ 
+	cf MembreController, route membre/update/$id
+	
+
+
+7/ Requete DELETE
+
+	Doctrine manipule des objets liés à nos entités. Aussi pour supprimer une entrée on doit d'abord la récupérer. 
+	
+	Ensuite la fonction remove() de notre EntityManager ($em), nous permet de préparer la suppression. Le flush() la rend effective. 
+
+	cf route /membre/delete/{id} de MembreController
+
+	
+8/ Create Query et Query Builder
+
+	Doctrine nous permet de facilement manipuler des enregistrement dans la BDD grâce aux entités (find, findBy, findOneBy, findAll, remove, persist).
+	Cela dit, on peut être ammené à vouloir des requêtes plus complexes... Doctrine nous fournit donc deux outils interessants : 
+	
+	
+	- Create Query  :  Nous permet d'écrire des requêtes en SQL (DQL). Voir la route "/" de ProduitController (requete DISTINCT)
+	
+	Lien : https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/dql-doctrine-query-language.html
+	
+	- Query Builder : Nous permet d'écrire des requêtes en PHP. Voir la route "produit/{id}" de ProduitController 
+
+	lien : https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/query-builder.html
+
+---------------------------
+ETAPE 8 : Les formulaires :
+---------------------------
+Sommaire : 
+
+1/ Le fonctionnement des formulaires
+2/ Création d'un formulaire (simple) pour l'inscription
+3/ Les classes Type
+4/ Récupérer les données du formulaire
+5/ Personnaliser le formulaire avec Bootstrap
+6/ Créer nos propre class Type hérité de AbstractType
+7/ Update un enregistrement (via formulaire)
+8/ Champs file (photo des produits)
+
+----------------	
+
+1/ Le fonctionnement des formulaires
+	-> Les formulaires sont liés à nos entités (ajout de produit, modif produit, inscription, modif de profil...). 
+	-> Chaque type de champs est géré par une classe (TextType, ChoiceType, SubmitType etc...)
+ 
+	Par exemple lorsque l'on modifier un produit, on va evoyer au formulaire un objet $produit, on dit qu'on hydrate le formulaire. 
+	
+2/ Création du formulaire (simple) d'inscription. 
+	
+	-> route "/inscription" du MembreController
+	
+	FormBuilder est "constructeur" de formulaire. il nous permet de paramétrer des formulaires. 
+	<code>
+	$formBuilder = $this -> get(form.factory) -> createBuilder(FormType::class, $membre);
+	ou
+	$formBuilder = $this -> createFormBuilder($membre);
+	
+	!! On lie un objet $membre à notre formulaire. 
+	
+	
+	On ajoute tous les champs atendus dans le formulaire avec -add()
+	<code>
+	$formBuilder 
+		-> add('pseudo', TextType::class) 
+		-> add('codePostal', IntegerType::class)
+		-> etc...;
+	
+
+	/!\ Attention à bien "use" toutes les TypeClass utilisées dans le formulaire
+	
+	On créé le formulaire
+	<code>
+	$form = $formBuilder -> getForm();
+	
+	On récupère la vue du formulaire qui sera ensuite transmise à la vue, via $params
+	<code>
+	$formView = $form -> createView();
+	
+	$params = array(
+		'membreForm' => $formView
+	);
+
+	
+	Dans la vue on affiche le formulaire en twig
+	<code>
+	{{ form(membreForm) }}
+	
+
+	
+3/ Les classes Type 
+
+	Lien : https://symfony.com/doc/current/reference/forms/types.html
+
+
+4/ Récupérer les données du formulaire
+
+	A/ On récupère les données du formulaire
+	<code>
+	$form -> handleRequest($request);
+	
+	-> A partir de là, notre objet $membre qui était lié au formulaire, contient les données entrées dans le formulaire
+	
+	
+	B/ ON vérifie la validité du formulaire
+	<code>
+	if($form -> isSubmitted() && $form -> isValid() ){
+	
+	}
+	
+	/!\ On verra plus tard, les options de validité
+	
+
+	C/ On enregistre les données saisie
+	$em = $this -> getDoctrine() -> getManager();
+	$em -> persist($membre); //$membre étant un objet lié au formulaire
+	$em -> flush();
+	
+	
+5/ Personnaliser le formulaire avec Bootstrap
+
+	- Methode 1 : 
+	fichier app/config/config.yml
+	<code>
+	twig
+	    form_themes:
+		    - 'bootstrap_4_layout.html.twig'
+	
+	
+	- Méthode 2 : 
+	Mettre les formulaires directement dans la vue. 
+	CF inscription.html.twig, où nous avons utiliser les options de twig pour générer un formulaire plus personnalisé : 
+			-> Choix de l'emplacement de l'affichage des erreurs
+			-> ajout d'attributs dans les champs (class, id, ng-model...)
+
+
+
+
+6/ Créer nos propres class Type hérité de AbstractType
+
+	- Contexte : Actuellement pour ajouter un formulaire à une route, on récupè_re un formBuilder, et on configure champs... 
+		-> problème : La route add_produit, et update_produit on besoin de créer le même formulaire produit...
+		
+		-> Solution : On va créer une classe dont le métier est de paramétrer ce formulaire produit. 
+
+		-> Résultat, il suffira de faire appel à cette classe pour générer un formulaire produit. 
+		
+		/!\ Gain de temps et meilleur factorisation du code
+
+
+	- Comme souvent, il existe une ligne de commande pour le faire presque intégralement ;)	
+	<cmd>
+	php bin/console generate:doctrine:form BoutiqueBundle:Produit
+	php bin/console generate:doctrine:form BoutiqueBundle:Membre
+	php bin/console generate:doctrine:form BoutiqueBundle:Commande
+		
+	---> Cela a créer dans le dossier src/BoutiqueBundle/Form/
+		ProduitType.php, CommandeType.php et MembreType.php
+		
+	- Configurer le fomulaire dans une classe (exemple MembreType) permet d'y faire appel rapidement, mais nécessite, d'hériter de la classe Abstraite Abstract Type. 
+	
+	- On peut paramétrer en détails chaque champs (required, attr, constaints (NotBlank, lenght etc..))
+		-> CF MembreType et ProduitType
+	
+	
+	- Dans le controller, il est plus nécessaire de créer le formulaire mais simplement de le récupérer
+	<code>
+	$form = $this ->  createForm(MembreType::class, $membre);
+	
+	
+	
+	
+7/ Update un enregistrement (via formulaire)
+
+	-> cf route update_produit
+	- Le fonctionnement de Symfony permet de simplement hydrater un formulaire avec les infos d'une entité, et le fait de valider le formulaire (persist(), flush()) permet de modifier l'enregistrement en BDD. 
+	
+
+8/ Champs file (photo des produits)	
+	
+		A/ Pour la photo de produit on créer un champs file
+			-> add('file', FileType::class);
+			/!\ A noter que notre champs se nomme 'file' et non 'photo'
+		
+		B/ Le champs file nous retourne un objet de la classe UploadedFile.
+			/!\ Le enctype="multipart/form-data" se fait automatiquement. 
+			
+		C/ Modifier notre entité Produit : 
+			1) use Symfony\Component\HttpFoundation\File\UploadedFile
+			2/ - On créer la propriété private $file
+			   - ON créer les getter et setter
+				/!\ Attention le setter prend en arg un objet UploadedFile
+			
+			3/ On créer les fonctions 	
+					chargementPhoto()
+					photoDir()
+					renameFile()
+					
+		D/ On modifie le controller, en oubliant d'éxécuter chargementPhoto() avant de flush le produit. 
+		
+		
+		/!\ Plus tard on pourrait utilsier les évènements pour automatiqer certaines choses (ex: supprimer un produit, et du coup supprimer la photo du serveur). 
+		
+ETAPE 10 : Sécurité et Utilisateur		
+Sommaire :
+1/ Niveaux de sécurité
+2/ Fichier de sécurité
+3/ Classe Membre
+-------
+	
+1/ Niveaux de sécurité
+	Sur symfony il existe 3 niveaux de sécurité : 
+		- Anonyme
+		- user identifié (ROLE_USER)
+		- User avec droits d'admin (ROLE_ADMIN)
+		
+	
+	
+	
+	Le système de SF se comporte comme un parefeu sur chaque page (route). A chaque fois SF va tester le statut de l'utilisateur et de la ressource.
+	
+		- Si user anonyme, ressources dispo : OK
+		- Si user anonyme, ressources non autorisé : -> Connexion
+		- Si user connecté, ressources dispo : OK
+		- Si user connecté, mais ressources non autorisé : Page Erreur
+		
+		
+2/ Fichier de sécurité
+	- app/config/security.yml
+	
+	-> Encoders (plaintext signifie pas d'encodage)
+	-> Providers (Qui sont nos users + users éphémères pour les tests)
+	-> Firewalls (Les regles connexion/deconnexion
+	-> Access Control (accessibilité)
+	-> role hierarchy (dégré d'action possible)
+	
+
+3/ SecurityController
+	-> Nous alons coder les routes Inscription/connexion/deconnexion
+	
+	
+	
+4/ Classe Membre	
+	-> implementation de UserInterface	
+	-> Modifier le pseudo --> username (+ getter et setter)
+	-> modifier le mdp --> password (+ getter et setter)
+	-> ajouter salt (+ getter et setter)
+	-> ajouter role (+ getter et setter)
+	-> Ajouter getRoles() et EraCredential() (obligatoire et liées à l'implementation de UserInterface)
+	
+
+		
+		
+	
+	
+	
+		
+    

@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %} 
+
+
+{# Métode 1 : {{form(membreForm)}}#}
+
+{# Méthode 2: On va générer nous même le formulaire  #}
+{{ form_start(membreForm) }}
+
+{# Si on souhaite afficher toutes les erreurs : {{ form_errors(membreForm) }}#}
+
+<div class="form-group">
+    {# Ceci permet d'afficher les champs , le lable et les erreurs {{ form_row(membreForm.username)}} #}
+</div>
+
+<div class="form-group">
+    <label>{{ form_label(membreForm.username) }}</label>
+    {{ form_widget(membreForm.username, { 'attr' : { 'class' : 'form-control', 'placeholder' : 'Votre username' }}) }}
+    
+    {% if(form_errors(membreForm.username)) %}
+    <span class="alert alert-danger">{{ form_errors(membreForm.username) }}</span>
+    {% endif %}
+</div>
+
+{{ form_rest(membreForm)}}
+{# Ceci permet dde générer des jetons CSRF et gère la sécurité #}
+
+
+{% endblock  %} 
